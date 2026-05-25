@@ -53,7 +53,7 @@ convertisseur-devise/
 ├── style.css
 ├── script.js
 ├── README.md
-└── screenshot.png
+└── Capture.png
 ```
 
 ## 👨‍💻 Auteur
