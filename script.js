@@ -6,6 +6,8 @@ const result = document.querySelector("#result");
 const swapBtn = document.querySelector("#swapBtn");
 const historyList = document.querySelector("#historyList");
 const clearHistoryBtn = document.querySelector("#clearHistoryBtn");
+const rateInfo = document.querySelector("#rateInfo");
+const themeBtn = document.querySelector("#themeBtn");
 
 let history = JSON.parse(localStorage.getItem("history")) || [];
 
@@ -56,6 +58,7 @@ async function convertCurrency(saveToHistory = true) {
 
   if (from === to) {
     result.textContent = `${amount} ${from} = ${amount} ${to}`;
+    rateInfo.textContent = `Taux : 1 ${from} = 1 ${to}`;
     return;
   }
 
@@ -69,6 +72,7 @@ async function convertCurrency(saveToHistory = true) {
     const data = await response.json();
 
     const rate = data[0].rate;
+    rateInfo.textContent = `Taux : 1 ${from} = ${rate.toFixed(4)} ${to}`;
     const convertedAmount = amount * rate;
     const conversionText = `${amount} ${from} = ${convertedAmount.toFixed(2)} ${to}`;
 
@@ -149,5 +153,20 @@ fromCurrency.addEventListener("change", () => {
 toCurrency.addEventListener("change", () => {
     if (amountInput.value !== "") {
         convertCurrency(false);
+    }
+});
+
+if(localStorage.getItem("theme") === "dark") {
+    document.body.classList.add("dark-mode");
+}
+
+themeBtn.addEventListener("click", () => {
+    
+    document.body.classList.toggle("dark-mode");
+
+    if(document.body.classList.contains("dark-mode")) {
+        localStorage.setItem("theme", "dark");
+    } else {
+        localStorage.setItem("theme", "light");
     }
 });

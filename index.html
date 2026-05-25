@@ -9,6 +9,7 @@
 <body>
     
     <div class="container">
+        <button id="themeBtn">🌙</button>
         <h1>Convertisseur de devise</h1>
         <input type="number" id="amount" placeholder="Montant">
         <select id="fromCurrency"></select>
@@ -19,7 +20,9 @@
 
         <button id="convertBtn">Convertir</button>
 
+        <div id="loader" class="hidden">⏳ Conversion...</div>
         <p id="result"></p>
+        <p id="rateInfo"></p>
 
         <h2>Historique</h2>
         <ul id="historyList"></ul>

@@ -28,3 +28,25 @@ button {
     margin-top: 20px;
     font-weight: bold;
 }
+
+.dark-mode {
+    background: #1e1e1e;
+    color: white;
+}
+
+.dark-mode .container {
+    background: #2c2c2c;
+}
+
+.dark-mode input, .dark-mode select, .dark-mode button {
+    background: #444;
+    color: white;
+    border: 1px solid #666;
+}
+
+.dark-mode li {
+    background: #333;
+    padding: 5px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
