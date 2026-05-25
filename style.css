@@ -50,3 +50,12 @@ button {
     margin-top: 5px;
     border-radius: 5px;
 }
+
+.hidden {
+    display: none;
+}
+
+#loader {
+    margin-top: 15px;
+    font-weight: bold;
+}

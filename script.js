@@ -8,6 +8,8 @@ const historyList = document.querySelector("#historyList");
 const clearHistoryBtn = document.querySelector("#clearHistoryBtn");
 const rateInfo = document.querySelector("#rateInfo");
 const themeBtn = document.querySelector("#themeBtn");
+const loader = document.querySelector("#loader");
+const copyBtn = document.querySelector("#copyBtn");
 
 let history = JSON.parse(localStorage.getItem("history")) || [];
 
@@ -63,7 +65,8 @@ async function convertCurrency(saveToHistory = true) {
   }
 
   try {
-    result.textContent = "Conversion en cours...";
+    loader.classList.remove("hidden");
+    result.textContent = "";
 
     const response = await fetch(
       `https://api.frankfurter.dev/v2/rates?base=${from}&quotes=${to}`
@@ -77,6 +80,7 @@ async function convertCurrency(saveToHistory = true) {
     const conversionText = `${amount} ${from} = ${convertedAmount.toFixed(2)} ${to}`;
 
     result.textContent = conversionText;
+    loader.classList.add("hidden");
 
     if (saveToHistory) {
         history.push(conversionText);
@@ -86,6 +90,7 @@ async function convertCurrency(saveToHistory = true) {
 
   } catch (error) {
     console.log(error);
+    loader.classList.add("hidden");
     result.textContent = "Impossible de convertir pour le moment.";
   }
 }
@@ -168,5 +173,26 @@ themeBtn.addEventListener("click", () => {
         localStorage.setItem("theme", "dark");
     } else {
         localStorage.setItem("theme", "light");
+    }
+});
+
+copyBtn.addEventListener("click", async () => {
+
+    if(result.textContent === "") return;
+
+    try {
+        
+        await navigator.clipboard.writeText(
+            result.textContent
+        );
+
+        copyBtn.textContent = "✅ Copié !";
+
+        setTimeout(() => {
+            copyBtn.textContent = "Copier";
+        }, 2000);
+
+    } catch (error) {
+        console.log(error);
     }
 });
