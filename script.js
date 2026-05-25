@@ -10,6 +10,32 @@ const rateInfo = document.querySelector("#rateInfo");
 const themeBtn = document.querySelector("#themeBtn");
 const loader = document.querySelector("#loader");
 const copyBtn = document.querySelector("#copyBtn");
+const resetBtn = document.querySelector("#resetBtn");
+const fromSearch = document.querySelector("#fromSearch");
+const toSearch = document.querySelector("#toSearch");
+const currencyNames = {
+  EUR: "Euro",
+  USD: "Dollar américain",
+  GBP: "Livre sterling",
+  JPY: "Yen japonais",
+  CHF: "Franc suisse",
+  CAD: "Dollar canadien",
+  AUD: "Dollar australien",
+  NZD: "Dollar néo-zélandais",
+  CNY: "Yuan chinois",
+  INR: "Roupie indienne",
+  BRL: "Réal brésilien",
+  MXN: "Peso mexicain",
+  SEK: "Couronne suédoise",
+  NOK: "Couronne norvégienne",
+  DKK: "Couronne danoise",
+  PLN: "Zloty polonais",
+  CZK: "Couronne tchèque",
+  HUF: "Forint hongrois",
+  TRY: "Livre turque",
+  ZAR: "Rand sud-africain",
+  XOF: "Franc CFA BCEAO"
+};
 
 let history = JSON.parse(localStorage.getItem("history")) || [];
 
@@ -17,30 +43,76 @@ function saveHistory() {
     localStorage.setItem("history", JSON.stringify(history));
 }
 
+function saveSelectedCurrencies() {
+    localStorage.setItem("fromCurrency", fromCurrency.value);
+    localStorage.setItem("toCurrency", toCurrency.value);
+}
+
+function displayOptions(selectElement, currencies) {
+  selectElement.innerHTML = "";
+
+  currencies.forEach((currency) => {
+
+    const label =
+      currency.name === currency.code
+        ? currency.code
+        : `${currency.code} - ${currency.name}`;
+
+    selectElement.innerHTML += `
+      <option value="${currency.code}">
+        ${label}
+      </option>
+    `;
+  });
+}
+
+let allCurrencies = [];
+
 async function loadCurrencies() {
   try {
-    const response = await fetch("https://api.frankfurter.dev/v2/rates");
-    const data = await response.json();
 
-    const currencies = [
-      data[0].base,
-      ...data.map((item) => item.quote)
+    const ratesResponse = await fetch(
+      "https://api.frankfurter.dev/v2/rates"
+    );
+
+    const ratesData = await ratesResponse.json();
+
+    const availableCurrencies = [
+      ratesData[0].base,
+      ...ratesData.map((item) => item.quote)
     ];
 
-    currencies.sort();
+    if (!availableCurrencies.includes("XOF")) {
+        availableCurrencies.push("XOF");
+    }
 
-    currencies.forEach((currency) => {
-      fromCurrency.innerHTML += `
-        <option value="${currency}">${currency}</option>
-      `;
+    const currenciesResponse = await fetch(
+      "https://api.frankfurter.dev/v2/currencies"
+    );
 
-      toCurrency.innerHTML += `
-        <option value="${currency}">${currency}</option>
-      `;
+    const currenciesData = await currenciesResponse.json();
+
+    allCurrencies = availableCurrencies.map((code) => {
+        let currencyName = currenciesData[code];
+
+        if (typeof currencyName === "object") {
+            currencyName = currencyName.name;
+        }
+
+        return {
+            code: code,
+            name: currencyNames[code] || code
+        };
     });
 
-    fromCurrency.value = "EUR";
-    toCurrency.value = "USD";
+    displayOptions(fromCurrency, allCurrencies);
+    displayOptions(toCurrency, allCurrencies);
+
+    fromCurrency.value =
+      localStorage.getItem("fromCurrency") || "EUR";
+
+    toCurrency.value =
+      localStorage.getItem("toCurrency") || "USD";
 
   } catch (error) {
     console.log(error);
@@ -75,7 +147,8 @@ async function convertCurrency(saveToHistory = true) {
     const data = await response.json();
 
     const rate = data[0].rate;
-    rateInfo.textContent = `Taux : 1 ${from} = ${rate.toFixed(4)} ${to}`;
+    const rateDate = data[0].date;
+    rateInfo.textContent = `Taux : 1 ${from} = ${rate.toFixed(4)} ${to} - date : ${rateDate}`;
     const convertedAmount = amount * rate;
     const conversionText = `${amount} ${from} = ${convertedAmount.toFixed(2)} ${to}`;
 
@@ -83,9 +156,11 @@ async function convertCurrency(saveToHistory = true) {
     loader.classList.add("hidden");
 
     if (saveToHistory) {
-        history.push(conversionText);
-        saveHistory();
-        displayHistory();
+        if (!history.includes(conversionText)) {
+            history.push(conversionText);
+            saveHistory();
+            displayHistory();
+        }
     }
 
   } catch (error) {
@@ -123,6 +198,7 @@ swapBtn.addEventListener("click", () => {
   fromCurrency.value = toCurrency.value;
   toCurrency.value = oldFrom;
 
+  saveSelectedCurrencies();
   convertCurrency();
 });
 
@@ -150,12 +226,16 @@ amountInput.addEventListener("input", () => {
 });
 
 fromCurrency.addEventListener("change", () => {
+    saveSelectedCurrencies();
+
     if (amountInput.value !== "") {
         convertCurrency(false);
     }
 });
 
 toCurrency.addEventListener("change", () => {
+    saveSelectedCurrencies();
+
     if (amountInput.value !== "") {
         convertCurrency(false);
     }
@@ -195,4 +275,42 @@ copyBtn.addEventListener("click", async () => {
     } catch (error) {
         console.log(error);
     }
+});
+
+resetBtn.addEventListener("click", () => {
+    amountInput.value = "";
+    result.textContent = "";
+    rateInfo.textContent = "";
+    loader.classList.add("hidden");
+
+    fromCurrency.value = "EUR";
+    toCurrency.value = "USD";
+
+    saveSelectedCurrencies();
+});
+
+fromSearch.addEventListener("input", () => {
+    const searchValue = fromSearch.value.toLowerCase();
+
+    const filteredCurrencies = allCurrencies.filter((currency) => {
+        return (
+            currency.code.toLowerCase().includes(searchValue) ||
+            currency.name.toLowerCase().includes(searchValue)
+        );
+    });
+
+    displayOptions(fromCurrency, filteredCurrencies);
+});
+
+toSearch.addEventListener("input", () => {
+    const searchValue = toSearch.value.toLowerCase();
+
+    const filteredCurrencies = allCurrencies.filter((currency) => {
+        return (
+            currency.code.toLowerCase().includes(searchValue) ||
+            currency.name.toLowerCase().includes(searchValue)
+        );
+    });
+
+    displayOptions(toCurrency, filteredCurrencies);
 });

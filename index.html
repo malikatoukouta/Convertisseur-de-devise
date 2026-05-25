@@ -12,13 +12,16 @@
         <button id="themeBtn">🌙</button>
         <h1>Convertisseur de devise</h1>
         <input type="number" id="amount" placeholder="Montant">
+        <input type="text" id="fromSearch" placeholder="1ère devise">
         <select id="fromCurrency"></select>
 
         <button id="swapBtn" type="button">↔️ Inverser</button>
 
+        <input type="text" id="toSearch" placeholder="Seconde devise">
         <select id="toCurrency"></select>
 
         <button id="convertBtn">Convertir</button>
+        <button id="resetBtn" type="button">Réinitialiser</button>
 
         <div id="loader" class="hidden">⏳ Conversion...</div>
         <p id="result"></p>

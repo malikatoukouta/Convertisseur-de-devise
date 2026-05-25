@@ -1,61 +1,160 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    padding: 40px;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+  color: #111827;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+/* Carte principale */
 .container {
-    max-width: 400px;
-    margin: auto;
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    text-align: center;
+  width: 100%;
+  max-width: 520px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
 }
 
-input, select, button {
-    width: 100%;
-    padding: 12px;
-    margin-top: 12px;
-    font-size: 16px;
+h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+input,
+select,
+button {
+  width: 100%;
+  padding: 13px;
+  margin-top: 10px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  font-size: 16px;
 }
 
 button {
-    cursor: pointer;
+  border: none;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background: #1d4ed8;
+}
+
+#swapBtn,
+#resetBtn,
+#copyBtn,
+#themeBtn,
+#clearHistoryBtn {
+  background: #111827;
+}
+
+#swapBtn:hover,
+#resetBtn:hover,
+#copyBtn:hover,
+#themeBtn:hover,
+#clearHistoryBtn:hover {
+  background: #374151;
 }
 
 #result {
-    margin-top: 20px;
-    font-weight: bold;
+  margin-top: 20px;
+  padding: 15px;
+  background: #eff6ff;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: bold;
 }
 
-.dark-mode {
-    background: #1e1e1e;
-    color: white;
-}
-
-.dark-mode .container {
-    background: #2c2c2c;
-}
-
-.dark-mode input, .dark-mode select, .dark-mode button {
-    background: #444;
-    color: white;
-    border: 1px solid #666;
-}
-
-.dark-mode li {
-    background: #333;
-    padding: 5px;
-    margin-top: 5px;
-    border-radius: 5px;
-}
-
-.hidden {
-    display: none;
+#rateInfo {
+  text-align: center;
+  color: #4b5563;
 }
 
 #loader {
-    margin-top: 15px;
-    font-weight: bold;
+  text-align: center;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Historique */
+#historyList {
+  padding: 0;
+  list-style: none;
+}
+
+#historyList li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f9fafb;
+  padding: 12px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.deleteHistoryBtn {
+  width: auto;
+  padding: 6px 10px;
+  margin: 0;
+  background: #dc2626;
+}
+
+.deleteHistoryBtn:hover {
+  background: #b91c1c;
+}
+
+/* Mode sombre */
+.dark-mode {
+  background: #111827;
+  color: white;
+}
+
+.dark-mode .container {
+  background: #1f2937;
+}
+
+.dark-mode input,
+.dark-mode select {
+  background: #374151;
+  color: white;
+  border-color: #4b5563;
+}
+
+.dark-mode #result {
+  background: #1e3a8a;
+}
+
+.dark-mode #rateInfo {
+  color: #d1d5db;
+}
+
+.dark-mode #historyList li {
+  background: #374151;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  body {
+    padding: 20px;
+    align-items: flex-start;
+  }
+
+  .container {
+    padding: 20px;
+  }
 }
