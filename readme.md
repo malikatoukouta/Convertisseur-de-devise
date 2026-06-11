@@ -6,16 +6,21 @@ Une application web moderne de conversion de devises réalisées en HTML, CSS et
 
 - Conversion de devises en temps réél
 - Recherche dynamique des devises
-- Historique des conversions
+- Graphique de l'évolution du taux sur 30 jours 📈
+- Aperçu du montant dans les devises populaires
+- Historique des conversions avec horodatage
+- Relance d'une conversion en cliquant dans l'historique
 - Suppression individuelle de l'historique
 - Sauvegarde avec localStorage
 - Mode sombre 🌙
 - Copier le résultat 📋
 - Inversion des devises 🔄
-- Affichage du taux exact
+- Affichage du taux exact avec sa date
+- Formatage des nombres à la française (séparateurs de milliers)
+- Drapeaux des devises 🇪🇺🇺🇸
 - Loader de chargement ⏳
 - Responsive mobile 📱
-- Support du Franc CFA BCEAO (XOF)
+- Support du Franc CFA BCEAO (XOF) via la parité fixe EUR/XOF (1 EUR = 655,957 XOF)
 
 ## 🛠️ Technologies utilisées
 

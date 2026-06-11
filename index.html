@@ -7,31 +7,66 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    
+
     <div class="container">
-        <button id="themeBtn">🌙</button>
-        <h1>Convertisseur de devise</h1>
-        <input type="number" id="amount" placeholder="Montant">
-        <input type="text" id="fromSearch" placeholder="1ère devise">
-        <select id="fromCurrency"></select>
 
-        <button id="swapBtn" type="button">↔️ Inverser</button>
+        <header class="header">
+            <h1>💱 Convertisseur de devise</h1>
+            <button id="themeBtn" type="button" aria-label="Changer de thème">🌙</button>
+        </header>
 
-        <input type="text" id="toSearch" placeholder="Seconde devise">
-        <select id="toCurrency"></select>
+        <div class="field">
+            <label for="amount">Montant</label>
+            <input type="number" id="amount" placeholder="Ex : 100" min="0" inputmode="decimal">
+        </div>
 
-        <button id="convertBtn">Convertir</button>
-        <button id="resetBtn" type="button">Réinitialiser</button>
+        <div class="converter">
+            <div class="field">
+                <label for="fromCurrency">De</label>
+                <input type="text" id="fromSearch" placeholder="🔍 Rechercher...">
+                <select id="fromCurrency"></select>
+            </div>
+
+            <button id="swapBtn" type="button" title="Inverser les devises" aria-label="Inverser les devises">⇅</button>
+
+            <div class="field">
+                <label for="toCurrency">Vers</label>
+                <input type="text" id="toSearch" placeholder="🔍 Rechercher...">
+                <select id="toCurrency"></select>
+            </div>
+        </div>
+
+        <div class="actions">
+            <button id="convertBtn" type="button">Convertir</button>
+            <button id="resetBtn" type="button" class="secondary">Réinitialiser</button>
+        </div>
 
         <div id="loader" class="hidden">⏳ Conversion...</div>
-        <p id="result"></p>
-        <button id="copyBtn">📋 Copier</button>
-        <p id="rateInfo"></p>
 
-        <h2>Historique</h2>
-        <ul id="historyList"></ul>
+        <div id="resultCard" class="hidden">
+            <p id="result"></p>
+            <p id="rateInfo"></p>
+            <button id="copyBtn" type="button" class="secondary">📋 Copier</button>
+        </div>
 
-        <button id="clearHistoryBtn">Vider l'historique</button>
+        <section id="popularSection" class="hidden">
+            <h2>Autres devises</h2>
+            <div id="popularGrid"></div>
+        </section>
+
+        <section id="chartSection" class="hidden">
+            <h2>Évolution sur 30 jours</h2>
+            <div id="chart"></div>
+            <p id="chartInfo"></p>
+        </section>
+
+        <section id="historySection">
+            <h2>Historique</h2>
+            <p id="historyEmpty">Aucune conversion pour le moment.</p>
+            <ul id="historyList"></ul>
+            <button id="clearHistoryBtn" type="button" class="danger">🗑️ Vider l'historique</button>
+        </section>
+
     </div>
 
     <script src="script.js"></script>
